@@ -58,6 +58,8 @@ void loop() {
 
     for (int i = 0 ; i < 512 ; i += 2) {  // save 256 samples
       while(!(ADCSRA & 0x10) && (digitalRead(9) == HIGH));           // wait for adc to be ready and Button Press
+      lcd.clear();
+      lcd.setCursor(0,0); lcd.print("Receiving");
       ADCSRA = 0xf5;                      // restart adc
       byte m = ADCL;                      // fetch adc data // puts
       byte j = ADCH;                      // adc high
@@ -98,8 +100,7 @@ void loop() {
     }
     
     if( digitalRead(9) == LOW) {
-      
-      lcd.clear(); 
+      lcd.clear();
       lcd.setCursor(0,0); lcd.print(last); lcd.print(" Hz");
       lcd.setCursor(0,1); lcd.print( largest_obj_speed ); lcd.print(" MPH");
     }
