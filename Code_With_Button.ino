@@ -28,6 +28,8 @@ void setup() {
   ADMUX = 0x40;                     // use adc0
   DIDR0 = 0x01;                     // turn off the digital input for adc0
 
+  lcd.clear();
+  lcd.setCursor(0,0); lcd.print("Starting..");
   /*sample every 1ms,
   // 1kHz sampling rate
   // 4Hz bin size.
@@ -38,7 +40,7 @@ void setup() {
 
 int last = 0;                       // Storing the Freq
 int largest = 0;
-int largest_obj_speed  = 0;
+int largest_obj_speed  = 13;
 
 int toMilesPerHour(int dopplerFreq){
   /*Doppler Formula
@@ -94,8 +96,9 @@ void loop() {
     int obj_speed = toMilesPerHour( freq );       // calculates obj speed based on doppler freq
 
 
-    // Constraints based on we want the data and updates if current obj_speed is greater than largest obj speed.
-    if( largest > 150 && ( obj_speed > largest_obj_speed ) && obj_speed > 13.0) {
+    // Constraints based on how want the data and updates if current obj_speed is greater than largest obj speed.
+    // if the current object speed is greater than the global largest_obj_speed, obj_speed becomes the largest_obj_speed.
+    if( largest > 150 && ( obj_speed >= largest_obj_speed )) {
       last = freq;
       largest_obj_speed = obj_speed;
     }
