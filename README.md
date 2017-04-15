@@ -3,9 +3,9 @@
 This code outputs the speed of an object using the doppler effect
 
 ## Main Components
-* Bushnell Receiver
+* Bushnell Receiver with amplified Circuit
 * LCD Display with Backpack
-* Arduino
+* Arduino Uno
 
 ## Pin Connection
 * A0: IF Amplified Signal
