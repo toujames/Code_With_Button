@@ -7,11 +7,11 @@ This code outputs the speed of an object using the doppler effect
 * LCD Display with Backpack
 * Arduino
 
-## Connection
-
-* IF Signal to A0 in arduino
+## Pin Connection
+* A0: IF Amplified Signal
+* Pin 9:  Button
 
 ### SPI Backpack
-* DAT pin is #6
-* CLK pin is #2
-* LAT pin is #4
+* Pin 6: DAT
+* Pin 2: CLK
+* Pin 4: LAT
