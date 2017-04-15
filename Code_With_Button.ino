@@ -34,7 +34,7 @@ double toMilesPerHour(double dopplerFreq){
   // 3600 sec in 1 hour
   // 1609.34 meters in 1 mile
   */
-  return (dopplerFreq * 299792458.0 * 3600.0 ) / (2.0 * 24125000000.0 * 1609.0);
+  return (dopplerFreq * 299792458.0 * 3600.0 ) / (2.0 * 24125000000.0 * 1609.34);
 }
 
 // method to get max of two values.
