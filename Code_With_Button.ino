@@ -1,6 +1,6 @@
 /*
- * Reads in FFT Max data when button pressed
- * Outputs the speed when button is released
+ * Runs FHT with real data. When button pressed, Records max freq bin.
+ * Outputs the freq and speed when button is released
  * Author: James Touthang
 */
 
@@ -8,7 +8,7 @@
 #define LOG_OUT 1         // use the log output function
 #define FHT_N 256         // set to 256 point fht
 
-// Liraries
+// Libraries
 #include <FHT.h>          // include the library
 #include "Wire.h"
 #include "Adafruit_LiquidCrystal.h"
@@ -16,17 +16,23 @@
 Adafruit_LiquidCrystal lcd(6, 2, 4);
 
 // Optimizing Variables for better reading
-int max_mag = 180;                        // magnitude of bin threshold 
+int max_mag = 180;                        // magnitude of bin threshold, anything above gets stored as max 
 int bin_multiplier = 146.05;              // samplerate/fht. bin multiplier
-double highest_freq = 0;                             // Storing the highest Frequency
+//--------------------------------------------------------------------------------------------------------
 
+double highest_freq = 0;                  // Storing the highest Frequency
 int buttonState = HIGH;                  // button state is initialized as "pressed"
 
-// Arrow Character
-byte arrow1[8] = { B10000, B11000, B11100, 
-                   B11110, B11100, B11000, 
-                   B10000,B00000 };
+// custom Character
+byte arrow1[8] = { B10000,B11000,B11100,B11110, 
+                   B11100,B11000,B10000,B00000 };
+byte theo[8] = { B01110,B11001,B10000,B11000,
+                 B00110,B00001,B10011,B01110};
 
+byte theS[8] = { B01110,B11011,B10000,B11100,
+                    B00111,B10001,B11011,B01110};                             
+byte theu[8] = { B00000,B11111,B00000,B10001,
+                 B10001,B10001,B01110,B00000};
 double toMilesPerHour(double dopplerFreq){
   /*Doppler Formula
   // Transmitting Frequency = 24.125 GHz
@@ -59,6 +65,9 @@ void setup() {
   lcd.begin(16, 2);                 // LCD Initialization       
   lcd.setBacklight(HIGH);           // LCD Backlight
   lcd.createChar(1, arrow1);
+  lcd.createChar(2, theo);
+  lcd.createChar(3, theS);
+  lcd.createChar(4, theu);
   TIMSK0 = 0;                       // turn off timer0 for lower jitter
   ADCSRA = 0xe5;                    // set the adc to free running mode
   ADMUX = 0x40;                     // use adc0
@@ -83,7 +92,7 @@ void loop() {
      * fht_log_out[i], 
      *    i is the frequency bin
      *    fht_log_out[i] is the magnitied
-     * ffrequency: f(i) = i * sample_rate / FHT_N
+     * frequency: f(i) = i * sample_rate / FHT_N
      * sample_rate = 16 Mhz / some prescaler 
      */
     fht_window();       // window the data for better frequency response
@@ -117,9 +126,11 @@ void loop() {
     // Code for button pressed. Sets the highest_freq to 0 and display words
     if(debounceButton(buttonState)==HIGH && buttonState == LOW){
       highest_freq = 0;
-      lcd.setCursor(0,0); lcd.print("Collecting       ");
-      lcd.setCursor(0,1); lcd.write(1);lcd.write(1);lcd.write(1);lcd.write(1); lcd.write(1);lcd.write(1);lcd.print("       ");
-      //lcd.setCursor(0,1); lcd.print(" Rec               ");
+      lcd.setCursor(0,0); lcd.print("Collecting..       ");
+      lcd.setCursor(0,1); lcd.write(1);lcd.write(1);lcd.write(1);lcd.write(1);lcd.print("  ");
+                          lcd.write(2);lcd.write(3);lcd.write(4);lcd.print("  ");
+                          lcd.write(1);lcd.write(1);lcd.write(1);lcd.write(1);
+      
       buttonState = HIGH;
     } 
     
@@ -127,7 +138,6 @@ void loop() {
     else if ( debounceButton(buttonState)==LOW && buttonState == HIGH){
       lcd.setCursor(0,0); lcd.print(highest_freq); lcd.print(" Hz        ");
       lcd.setCursor(0,1); lcd.print(toMilesPerHour(highest_freq)); lcd.print(" MPH        ");
-      //lcd.setCursor(0,1); lcd.print(highest_freq); lcd.print(" Hz        ");
       buttonState = LOW;
     }
  }// end of while
