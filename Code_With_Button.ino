@@ -52,8 +52,8 @@ int maxValue(int x, int y){
 // method to account for the bouncing during the button press.
 boolean debounceButton(boolean state){
   boolean stateNow = digitalRead(9);
-  if(state!=stateNow){
-    delay(10);                                    // waits 10 ms to to account for the bouncing
+  if(state!=stateNow){                    // if buttonState and digitalRead is diff, it delays for 10ms
+    delay(10);                            // waits 10 ms to to account for the bouncing
     stateNow = digitalRead(9);
   }
   return stateNow;
@@ -64,10 +64,10 @@ void setup() {
   pinMode(9,INPUT);                 // Button
   lcd.begin(16, 2);                 // LCD Initialization       
   lcd.setBacklight(HIGH);           // LCD Backlight
-  lcd.createChar(1, arrow1);
-  lcd.createChar(2, theo);
-  lcd.createChar(3, theS);
-  lcd.createChar(4, theu);
+  lcd.createChar(1, arrow1);        // saves custom char to address 1
+  lcd.createChar(2, theo);          // saves custom char to address 2
+  lcd.createChar(3, theS);          // saves custom char to address 3
+  lcd.createChar(4, theu);          // saves custom char to address 4
   TIMSK0 = 0;                       // turn off timer0 for lower jitter
   ADCSRA = 0xe5;                    // set the adc to free running mode
   ADMUX = 0x40;                     // use adc0
@@ -88,13 +88,6 @@ void loop() {
       fht_input[i] = k;             // put real data into bins
     }
 
-    /*
-     * fht_log_out[i], 
-     *    i is the frequency bin
-     *    fht_log_out[i] is the magnitied
-     * frequency: f(i) = i * sample_rate / FHT_N
-     * sample_rate = 16 Mhz / some prescaler 
-     */
     fht_window();       // window the data for better frequency response
     fht_reorder();      // reorder the data before doing the fht
     fht_run();          // process the data in the fht
@@ -105,7 +98,13 @@ void loop() {
     Serial.write(255);                      // send a start byte
     Serial.write(fht_log_out, FHT_N/2);     // send out the data
 
-    
+    /*
+     * fht_log_out[i], 
+     *    i is the frequency bin
+     *    fht_log_out[i] is the magnitied
+     * frequency: f(i) = i * sample_rate / FHT_N
+     * sample_rate = 16 Mhz / some prescaler 
+     */
     int largest_index = 0;
     int last = 0;
     for (byte i = 2; i < FHT_N/2; i++) {    // iterates through each bin and if is the largest it stores it. 
@@ -131,14 +130,14 @@ void loop() {
                           lcd.write(2);lcd.write(3);lcd.write(4);lcd.print("  ");
                           lcd.write(1);lcd.write(1);lcd.write(1);lcd.write(1);
       
-      buttonState = HIGH;
+      buttonState = HIGH;             // after exetuing all LoW states, set ButtonState to HGIH
     } 
     
     // Code for when button released. prints the data to lcd
     else if ( debounceButton(buttonState)==LOW && buttonState == HIGH){
       lcd.setCursor(0,0); lcd.print(highest_freq); lcd.print(" Hz        ");
       lcd.setCursor(0,1); lcd.print(toMilesPerHour(highest_freq)); lcd.print(" MPH        ");
-      buttonState = LOW;
+      buttonState = LOW;              // after exetuing all HGIH states, set ButtonState to LOW
     }
  }// end of while
 }
