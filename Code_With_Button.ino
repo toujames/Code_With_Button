@@ -1,6 +1,7 @@
 /*
  * Reads in FFT Max data when button pressed
  * Outputs the speed when button is released
+ * Author: James Touthang
 */
 
 // Definitions
