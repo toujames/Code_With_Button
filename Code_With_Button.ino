@@ -26,8 +26,16 @@ int buttonState = HIGH;                  // button state is initialized as "pres
 // custom Character
 byte arrow1[8] = { B10000,B11000,B11100,B11110, 
                    B11100,B11000,B10000,B00000 };
-byte theo[8] = { B01110,B11001,B10000,B11000,
-                 B00110,B00001,B10011,B01110};
+byte theo[8] = {
+  0b00000,
+  0b01110,
+  0b10001,
+  0b10001,
+  0b01110,
+  0b00000,
+  0b11111,
+  0b00000
+};
 
 byte theS[8] = { B01110,B11011,B10000,B11100,
                     B00111,B10001,B11011,B01110};                             
@@ -107,7 +115,7 @@ void loop() {
      */
     int largest_index = 0;
     int last = 0;
-    for (byte i = 2; i < FHT_N/2; i++) {    // iterates through each bin and if is the largest it stores it. 
+    for (byte i = 6; i < FHT_N/2; i++) {    // iterates through each bin and if is the largest it stores it. 
       if( fht_log_out[i] >= max_mag) {
         largest_index = i;
       }
