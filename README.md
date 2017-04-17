@@ -18,4 +18,4 @@ This code outputs the speed of an object using the doppler effect
 * Pin 2: CLK
 * Pin 4: LAT
 
-[Website]http://touthang.info/senior2/)
+[Website](http://touthang.info/senior2/)
