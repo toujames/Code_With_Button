@@ -26,21 +26,17 @@ int buttonState = HIGH;                  // button state is initialized as "pres
 // custom Character
 byte arrow1[8] = { B10000,B11000,B11100,B11110, 
                    B11100,B11000,B10000,B00000 };
-byte theo[8] = {
-  0b00000,
-  0b01110,
-  0b10001,
-  0b10001,
-  0b01110,
-  0b00000,
-  0b11111,
-  0b00000
-};
+
+byte theo[8] = { 0b00000,0b01110,0b10001,0b10001,
+                 0b01110,0b00000,0b11111,0b00000};
 
 byte theS[8] = { B01110,B11011,B10000,B11100,
-                    B00111,B10001,B11011,B01110};                             
+                 B00111,B10001,B11011,B01110};  
+
 byte theu[8] = { B00000,B11111,B00000,B10001,
                  B10001,B10001,B01110,B00000};
+
+// method to return MPH, given frequency
 double toMilesPerHour(double dopplerFreq){
   /*Doppler Formula
   // Transmitting Frequency = 24.125 GHz
