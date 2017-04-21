@@ -24,16 +24,15 @@ double highest_freq = 0;                  // Storing the highest Frequency
 int buttonState = HIGH;                  // button state is initialized as "pressed"
 
 // custom Character
-byte arrow1[8] = { 0b10000,0B11000,0B11100,0B11110, 
+byte arrow1[8] = { 0B10000,0B11000,0B11100,0B11110, 
                    0B11100,0B11000,0B10000,0B00000 };
 byte theo[8] = { 0b00000,0b01110,0b10001,0b10001,
                  0b01110,0b00000,0b11111,0b00000};
 byte theS[8] = { 0B01110,0B11011,0B10000,0B11100,
-                 0B00111,0B10001,0B11011,0B01110};  
+                 0B00111,0B10001,0B11011,0B01110};                             
 byte theu[8] = { 0B00000,0B11111,0B00000,0B10001,
                  0B10001,0B10001,0B01110,0B00000};
-
-// method to return MPH, given frequency
+                 
 double toMilesPerHour(double dopplerFreq){
   /*Doppler Formula
   // Transmitting Frequency = 24.125 GHz
@@ -42,6 +41,10 @@ double toMilesPerHour(double dopplerFreq){
   // 1609.34 meters in 1 mile
   */
   return (dopplerFreq * 299792458.0 * 3600.0 ) / (2.0 * 24125000000.0 * 1609.34);
+}
+
+double toMetersPerSecond(double dopplerFreq){
+  return (dopplerFreq * 299792458.0 ) / (2.0 * 24125000000.0 );
 }
 
 // method to get max of two values.
@@ -136,8 +139,9 @@ void loop() {
     
     // Code for when button released. prints the data to lcd
     else if ( debounceButton(buttonState)==LOW && buttonState == HIGH){
-      lcd.setCursor(0,0); lcd.print(highest_freq); lcd.print(" Hz        ");
-      lcd.setCursor(0,1); lcd.print(toMilesPerHour(highest_freq)); lcd.print(" MPH        ");
+      //lcd.setCursor(0,0); lcd.print(highest_freq); lcd.print(" Hz        ");
+      lcd.setCursor(0,0); lcd.print(toMilesPerHour(highest_freq)); lcd.print(" MPH           "); 
+      lcd.setCursor(0,1); lcd.print(toMetersPerSecond(highest_freq)); lcd.print (" m/s        ");
       buttonState = LOW;              // after exetuing all HGIH states, set ButtonState to LOW
     }
  }// end of while
