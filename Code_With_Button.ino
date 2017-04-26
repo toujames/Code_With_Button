@@ -43,8 +43,8 @@ double toMilesPerHour(double dopplerFreq){
   return (dopplerFreq * 299792458.0 * 3600.0 ) / (2.0 * 24125000000.0 * 1609.34);
 }
 
-double toMetersPerSecond(double dopplerFreq){
-  return (dopplerFreq * 299792458.0 ) / (2.0 * 24125000000.0 );
+double toKilometersPerHour(double dopplerFreq){
+  return (dopplerFreq * 299792458.0 * 1000 ) / (2.0 * 24125000000.0 * 3600);
 }
 
 // method to get max of two values.
@@ -141,7 +141,7 @@ void loop() {
     else if ( debounceButton(buttonState)==LOW && buttonState == HIGH){
       //lcd.setCursor(0,0); lcd.print(highest_freq); lcd.print(" Hz        ");
       lcd.setCursor(0,0); lcd.print(toMilesPerHour(highest_freq)); lcd.print(" MPH           "); 
-      lcd.setCursor(0,1); lcd.print(toMetersPerSecond(highest_freq)); lcd.print (" m/s        ");
+      lcd.setCursor(0,1); lcd.print(toKilometersPerHour(highest_freq)); lcd.print (" kr/hr        ");
       buttonState = LOW;              // after exetuing all HGIH states, set ButtonState to LOW
     }
  }// end of while
